@@ -14,5 +14,5 @@ Poging tot het maken van de logica om de data vanuit de scanApp te verwerken en 
   - [X] Opdracht ID
   - [X] Tijdstip van scannen
 - [X] Bijhouden welke studenten al eerder gescand zijn
-- [ ] Exporteren van data naar een CSV bestand
+- [X] Exporteren van data naar een CSV bestand
   - [ ] (OPTIONEEL) Exporteren van data naar een Excel bestand

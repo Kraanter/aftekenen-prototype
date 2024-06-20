@@ -29,3 +29,7 @@ form div {
     grid-template-columns: 1fr 1fr;
     margin-bottom: 10px;
 }
+
+.wide {
+    grid-column: 1 / 3;
+}

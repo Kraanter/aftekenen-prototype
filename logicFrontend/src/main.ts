@@ -12,7 +12,7 @@ type Assignment = {
   assignmentId: string;
   done: boolean;
   notes: string;
-  timestamp?: number;
+  timestamp: number;
 }
 
 type StudentSchema = {
@@ -31,7 +31,7 @@ function submitStudent(data: Stringify<Student>) {
   database.insert('students', data)
   render(database)
 }
-const studentForm = createForm({ studentNumber: '', name: '' }, 'students', submitStudent)
+const studentForm = createForm({ studentNumber: '', name: '' }, 'students', submitStudent, database.exportToCsv.bind(database, 'students'))
 document.querySelector("#studentCol")?.appendChild(studentForm)
 
 function submitAssignment(data: Stringify<Assignment>) {
@@ -46,8 +46,8 @@ function submitAssignment(data: Stringify<Assignment>) {
   database.insert('assignments', newAssignment)
   render(database)
 }
-const assignmentForm = createForm({ studentNumber: '', assignmentId: '', done: false, notes: '' }, 'assignments', submitAssignment)
+const assignmentForm = createForm({ studentNumber: '', assignmentId: '', done: false, notes: '', timestamp: 0 }, 'assignments', submitAssignment,
+  database.exportToCsv.bind(database, 'assignments'))
 document.querySelector("#assignmentCol")?.appendChild(assignmentForm)
-
 
 render(database)

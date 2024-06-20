@@ -1,6 +1,4 @@
-interface IDatabaseSchema {
-  [key: string]: object[];
-}
+export type IDatabaseSchema = Record<string, object[]>;
 
 interface IDatabase<Schema extends IDatabaseSchema> {
   setup(): void;
@@ -56,6 +54,32 @@ class Database<Schema extends IDatabaseSchema> implements IDatabase<Schema> {
     }
 
     return JSON.parse(localStorage.getItem(location) || '[]');
+  }
+
+  exportToCsv<T extends keyof Schema>(location: T) {
+    const data = this.select(location);
+    if (!data.length) {
+      throw new Error('No data to export');
+    }
+
+    const header = Object.keys(data[0]).join(",");
+
+    const csv = [header, ...data.map(data => {
+      return Object.values(data).join(',');
+    })].join("\n");
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.csv';
+    a.click();
+  }
+
+  clear() {
+    Object.keys(this.schema).forEach(key => {
+      localStorage.setItem(key, JSON.stringify([]));
+    });
   }
 }
 

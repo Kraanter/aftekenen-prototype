@@ -31,7 +31,7 @@ export type Stringify<T extends { [key: string]: any }> = {
   [key in keyof T]: string
 }
 
-function createForm<T extends Record<string, any>>(object: T, name: string, onSubmit: (data: Stringify<T>) => void) {
+function createForm<T extends Record<string, any>>(object: T, name: string, onSubmit: (data: Stringify<T>) => void, onExport: () => void) {
   const form = document.createElement('form')
   form.id = `${name}Form`
 
@@ -55,6 +55,13 @@ function createForm<T extends Record<string, any>>(object: T, name: string, onSu
   const list = document.createElement('ul')
   list.id = `${name}`
   form.appendChild(list)
+
+  const exportButton = document.createElement('button')
+  exportButton.textContent = 'Export'
+  exportButton.addEventListener('click', () => {
+    onExport();
+  })
+  form.appendChild(exportButton)
 
   form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -113,9 +120,22 @@ function renderAssignments(database: StudentDatabase) {
   })
 }
 
+function bindExport(database: StudentDatabase) {
+  const clearButton = document.querySelector('#clear')
+  if (!clearButton) {
+    return
+  }
+
+  clearButton.addEventListener('click', () => {
+    database.clear()
+    render(database)
+  })
+}
+
 function render(database: StudentDatabase) {
   renderStudents(database)
   renderAssignments(database)
+  bindExport(database)
 }
 
 
