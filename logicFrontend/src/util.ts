@@ -21,13 +21,17 @@ function createFormInput(label: string, type: "string" | "number" | "boolean" | 
 
   input.name = label
   labelElement.textContent = label
-  labelElement.appendChild(input)
   div.appendChild(labelElement)
+  div.appendChild(input)
 
   return div
 }
 
-function createForm<T extends Record<string, any>>(object: T, name: string, onSubmit: (data: T) => void) {
+export type Stringify<T extends { [key: string]: any }> = {
+  [key in keyof T]: string
+}
+
+function createForm<T extends Record<string, any>>(object: T, name: string, onSubmit: (data: Stringify<T>) => void) {
   const form = document.createElement('form')
   form.id = `${name}Form`
 
@@ -40,20 +44,38 @@ function createForm<T extends Record<string, any>>(object: T, name: string, onSu
   submit.textContent = 'Submit'
   form.appendChild(submit)
 
+  const error = document.createElement('div')
+  error.id = 'error'
+  form.appendChild(error)
+
+  const showError = (message: string) => {
+    error.textContent = message
+  }
+
   const list = document.createElement('ul')
   list.id = `${name}`
   form.appendChild(list)
 
   form.addEventListener('submit', (e) => {
     e.preventDefault()
+    try {
+      Object.keys(object).forEach((key) => {
+        const input = form.querySelector(`input[name=${key}]`) as HTMLInputElement
+        if (!input) {
+          throw new Error(`Could not find input for ${key}`)
+        }
 
-    Object.keys(object).forEach((key) => {
-      const input = form.querySelector(`input[name=${key}]`) as HTMLInputElement
-      // @ts-ignore
-      object[key] = input.type === 'checkbox' ? input.checked : input.value
-    })
+        // @ts-ignore
+        object[key] = input.type === 'checkbox' ? input.checked : input.value
+        if (typeof object[key] !== "boolean" && !object[key]) {
+          throw new Error(`${key} is required`)
+        }
+      })
 
-    onSubmit(object)
+      onSubmit(object)
+    } catch (e: any) {
+      showError(e.message || 'An error occurred')
+    }
   })
 
   return form

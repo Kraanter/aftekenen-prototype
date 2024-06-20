@@ -12,7 +12,6 @@ body {
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-template-rows: 1fr 1fr;
     grid-gap: 10px;
     padding: 10px;
 }
@@ -22,4 +21,11 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 10px;
 }
