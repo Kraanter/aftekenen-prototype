@@ -16,3 +16,9 @@ Poging tot het maken van de logica om de data vanuit de scanApp te verwerken en 
 - [X] Bijhouden welke studenten al eerder gescand zijn
 - [X] Exporteren van data naar een CSV bestand
   - [ ] (OPTIONEEL) Exporteren van data naar een Excel bestand
+
+## Installatie
+
+1. Clone de repository
+2. Installeer de benodigde packages met `npm install` of `bun install`
+3. Start de applicatie met `npm start` of `bun start`
