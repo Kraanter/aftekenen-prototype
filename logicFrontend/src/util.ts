@@ -58,7 +58,8 @@ function createForm<T extends Record<string, any>>(object: T, name: string, onSu
 
   const exportButton = document.createElement('button')
   exportButton.textContent = 'Export'
-  exportButton.addEventListener('click', () => {
+  exportButton.addEventListener('click', (e) => {
+    e.preventDefault();
     onExport();
   })
   form.appendChild(exportButton)
@@ -120,7 +121,7 @@ function renderAssignments(database: StudentDatabase) {
   })
 }
 
-function bindExport(database: StudentDatabase) {
+function bindClear(database: StudentDatabase) {
   const clearButton = document.querySelector('#clear')
   if (!clearButton) {
     return
@@ -135,7 +136,7 @@ function bindExport(database: StudentDatabase) {
 function render(database: StudentDatabase) {
   renderStudents(database)
   renderAssignments(database)
-  bindExport(database)
+  bindClear(database)
 }
 
 

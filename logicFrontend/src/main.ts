@@ -35,7 +35,22 @@ const studentForm = createForm({ studentNumber: '', name: '' }, 'students', subm
 document.querySelector("#studentCol")?.appendChild(studentForm)
 
 function submitAssignment(data: Stringify<Assignment>) {
-  database.select('students').find(student => student.studentNumber == data.studentNumber) || (() => { throw new Error('Student not found') })()
+  const student = database.select('students').find(student => student.studentNumber === data.studentNumber)
+  if (!student) {
+    const studentName = prompt('Enter the student name')
+    if (!studentName) {
+      return
+    }
+
+    database.insert('students', { studentNumber: data.studentNumber, name: studentName })
+  } else {
+    // Double check that the student name is correct
+    if (confirm(`Is ${student.name} the correct student?`)) {
+      data.studentNumber = student.studentNumber
+    } else {
+      return
+    }
+  }
 
   const newAssignment: Assignment = {
     ...data,
