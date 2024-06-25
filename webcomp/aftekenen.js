@@ -99,6 +99,14 @@ class QRComponent extends HTMLElement {
     this.attachShadow({
       mode: "open",
     });
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js';
+    this.shadowRoot.appendChild(script);
+
+    script.onload = () => {
+      this.render();
+    }
   }
 
   connectedCallback() {
