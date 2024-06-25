@@ -31,17 +31,6 @@ class AftekenComponent extends HTMLElement {
       assignmentID: this.assignmentID
     }
     this.shadowRoot.innerHTML = `
-      <style>
-        qr-code {
-          width: 200px;
-          height: 200px;
-          aspect-ratio: 1;
-          position: absolute;
-          margin: 10px;
-          top: 0;
-          right: 0;
-        }
-      </style>
       <qr-code ${Object.entries(data).map(([key, value]) => `${key}="${value}"`).join(' ')}></qr-code>
       `
   }
